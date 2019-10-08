@@ -2,6 +2,7 @@ package com.ricardocavalcante.cadastro.controller;
 
 import com.ricardocavalcante.cadastro.model.Rebelde;
 import com.ricardocavalcante.cadastro.repository.RebeldeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping({"/rebelde"})
 public class RebeldeController {
 
+    @Autowired
     private RebeldeRepository repository;
 
     RebeldeController(RebeldeRepository rebeldeRepository) {

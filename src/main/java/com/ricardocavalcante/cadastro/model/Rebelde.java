@@ -40,6 +40,16 @@ public class Rebelde {
     @NotNull
     private String genero;
 
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="delacao",
+            joinColumns={@JoinColumn(name="delator_id",
+                    referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="traidor_id",
+                    referencedColumnName="id")})
+    @JsonIgnore
+    private List<Rebelde> traidores = new ArrayList<>();
+
+
     public Long getId() {
         return id;
     }
