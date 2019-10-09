@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+//@Table(name = "rebelde")
 public class Rebelde {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,15 +41,14 @@ public class Rebelde {
     @NotNull
     private String genero;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="delacao",
-            joinColumns={@JoinColumn(name="delator_id",
+    @ManyToMany
+    @JoinTable(name="denuncia",
+            joinColumns={@JoinColumn(name="delator",
                     referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="traidor_id",
+            inverseJoinColumns={@JoinColumn(name="traidor",
                     referencedColumnName="id")})
     @JsonIgnore
     private List<Rebelde> traidores = new ArrayList<>();
-
 
     public Long getId() {
         return id;

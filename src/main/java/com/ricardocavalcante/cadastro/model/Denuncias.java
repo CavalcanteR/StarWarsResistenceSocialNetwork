@@ -21,9 +21,14 @@ public class Denuncias {
     private Long id;
 
     @NotNull
-    private int delator;
+    private Long delator;
 
     @NotNull
-    private int rebelde;
+    private Long rebelde;
+
+    public void denunciar(Long delator, Long rebelde) {
+        this.delator = delator;
+        this.rebelde = rebelde;
+    }
 
 }
