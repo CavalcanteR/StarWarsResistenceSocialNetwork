@@ -6,52 +6,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping({"/rebelde"})
+@RequestMapping({"/rebeldes"})
 public class RebeldeController {
 
     @Autowired
-    private RebeldeRepository repository;
+    private RebeldeRepository repositorio;
 
-    RebeldeController(RebeldeRepository rebeldeRepository) {
-        this.repository = rebeldeRepository;
-    }
-
-    //Selecionar o rebelde
-    @GetMapping(path = {"/{id}"})
-    public ResponseEntity findById(@PathVariable long id){
-        return repository.findById(id)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    //Criar rebelde
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody Rebelde rebelde){
-        Rebelde novo = repository.save(rebelde);
-        return ResponseEntity.ok().build();
+    public Rebelde adicionar(@Valid @RequestBody Rebelde rebelde) {
+        return repositorio.save(rebelde);
     }
 
-    @PostMapping("/{idDelator}/delatar/{idTraidor}")
-    public ResponseEntity<?> delatar(@PathVariable Long idDelator,
-                                     @PathVariable Long idTraidor) {
-        return repository.findById(idDelator)
-        .map(delator ->repository.findById(idTraidor)
-            .map(traidor -> {
-                try {
-                    delator.addTraidor(traidor);
-                } catch (Exception e) {
-                    return ResponseEntity.badRequest().body(Collections.singletonMap("response", e.getMessage()));
-                }
-                Rebelde delatorAtualizado = repository.save(delator);
-                return ResponseEntity.ok().body(Collections.singletonMap("response", "A registẽncia agradece."));
-            }).orElse(ResponseEntity.notFound().build())
-        ).orElse(ResponseEntity.notFound().build());
+    @GetMapping
+    public List<Rebelde> listar() {
+        return repositorio.findAll();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity buscar(@PathVariable Long id) {
+        Optional<Rebelde> rebelde = repositorio.findById(id);
+
+        if(rebelde==null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(rebelde);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> editar(@PathVariable Long id, @RequestBody Rebelde rebelde) {
+        return repositorio.findById(id)
+                .map(retorno -> {
+                    retorno.editarLocalizacao(rebelde.getLatitude(),rebelde.getLongitude(),rebelde.getBase());
+                    Rebelde atualizado = repositorio.save(retorno);
+                    return ResponseEntity.ok().build();
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
 
 
 }

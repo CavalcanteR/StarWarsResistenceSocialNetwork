@@ -10,6 +10,4 @@ import java.util.List;
 @Repository
 public interface RebeldeRepository extends JpaRepository<Rebelde, Long> {
 
-    @Query("SELECT tr FROM Rebelde r INNER JOIN r.traidores tr GROUP BY tr.id HAVING COUNT(tr.id) >= 3")
-    List<Rebelde> findAllTraidores();
 }

@@ -115,6 +115,12 @@ public class Rebelde {
         this.base      = base;
     }
 
+    public void editarLocalizacao(double latitude, double longitude, String base) {
+        this.latitude  = latitude;
+        this.longitude = longitude;
+        this.base      = base;
+    }
+
     public void addTraidor(Rebelde traidor) throws Exception {
 
 
