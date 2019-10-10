@@ -41,6 +41,16 @@ public class Rebelde {
     @NotNull
     private String genero;
 
+
+    @ManyToMany
+    @JoinTable(name="itens",
+            joinColumns={@JoinColumn(name="item_id",
+                    referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="rebelde_id",
+                    referencedColumnName="id")})
+    @JsonIgnore
+    private List<Item> inventario = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(name="denuncia",
             joinColumns={@JoinColumn(name="delator",
@@ -106,13 +116,24 @@ public class Rebelde {
         this.genero = genero;
     }
 
-    public Rebelde(String nome, int idade, String genero, double latitude, double longitude, String base) {
-        this.nome      = nome;
-        this.idade     = idade;
-        this.genero    = genero;
-        this.latitude  = latitude;
-        this.longitude = longitude;
-        this.base      = base;
+    public List<Item> getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(List<Item> inventario) {
+        this.inventario = inventario;
+    }
+
+    public Rebelde(String nome, int idade, String genero,
+                   double latitude, double longitude, String base,
+                   ArrayList<Item> inventario) {
+        this.nome       = nome;
+        this.idade      = idade;
+        this.genero     = genero;
+        this.latitude   = latitude;
+        this.longitude  = longitude;
+        this.base       = base;
+        this.inventario = inventario;
     }
 
     public void editarLocalizacao(double latitude, double longitude, String base) {
